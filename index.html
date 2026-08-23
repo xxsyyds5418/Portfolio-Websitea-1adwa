@@ -543,6 +543,7 @@ body {
   top: 8px; right: 8px;
   width: 24px; height: 24px;
 }
+.qr-img.has-qr::before, .qr-img.has-qr::after { content: none; }
 .qr-card h4 {
   font-family: var(--font-retro);
   font-size: 22px;
@@ -981,25 +982,23 @@ footer {
         <p class="lead">三种最快的联系方式 — 都点开后扫二维码即可。</p>
         <div class="contact-grid">
           <div class="qr-card">
-            <div class="qr-img"></div>
+            <div class="qr-img has-qr" style="background:#fff url('qr_email.png') center/contain no-repeat"></div>
             <h4>Email</h4>
             <div class="meta">poiu98761@qq.com</div>
           </div>
           <div class="qr-card">
-            <div class="qr-img"></div>
+            <div class="qr-img has-qr" style="background:#fff url('qr_wechat.jpg') center/contain no-repeat"></div>
             <h4>微信</h4>
             <div class="meta">qwerty200941966</div>
           </div>
           <div class="qr-card">
-            <div class="qr-img"></div>
+            <div class="qr-img has-qr" style="background:#fff url('qr_qq.png') center/contain no-repeat"></div>
             <h4>QQ</h4>
             <div class="meta">3793765425</div>
           </div>
         </div>
         <p style="font-size:13px; color:#6a6048; margin-top: 18px;">
-          // .qr-img 里的对角图案是占位 — 你把真实二维码图片（PNG/JPG）
-          // 命名成 qr_email.png / qr_wechat.png / qr_qq.png 放项目目录下，
-          // 然后把 CSS 里的 .qr-img 改成 background-image:url(...) 就行。
+          // 二维码已替换为真实图（qr_email.png / qr_wechat.jpg / qr_qq.png）— 长按/点击保存图片扫码即可。
         </p>
       </div>
 
