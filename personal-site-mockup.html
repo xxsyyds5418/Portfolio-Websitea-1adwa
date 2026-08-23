@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>星织 Studio — 老板大人的个人站 [样板]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Inter:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+<!-- ========================================
+     全局占位符（替换这里就能换名字/链接）
+     ======================================== -->
+<!--
+  const PERSON_NAME = "星织";
+  const PERSON_TAGLINE_EN = "illustrator · animator · indie dev";
+  const PERSON_TAGLINE_CN = "AI 编程 / 二次元 / 小程序 / 游戏开发的独立创作者";
+  邮箱 / 微信 / QQ 占位用 CSS 画出来，你后期把二维码图替换 .qr-img 的 background-image 即可。
+-->
+
+<style>
+/* ============================================
+   设计 Token — 全站唯一改色入口
+   ============================================ */
+:root {
+  /* 配色：深色为主 + 复古点缀色 */
+  --bg:              #0a0a0c;
+  --bg-soft:         #14141a;
+  --bg-elevated:     #1c1c24;
+  --bg-card:         #22222c;
+  --line:            #2a2a36;
+  --line-strong:     #3a3a48;
+
+  /* 复古窗体（米色系） */
+  --window:          #ece8d8;
+  --window-bar:      #d4cfba;
+  --window-border:   #1a1a1f;
+  --window-text:     #2a2418;
+
+  /* 复古点缀色 */
+  --accent-yellow:   #FFB95C;
+  --accent-pink:     #FF66CC;
+  --accent-cyan:     #5DD3D3;
+  --accent-mint:     #66FF99;
+  --accent-orange:   #FF6B35;
+  --accent-cream:    #FFF8E7;
+
+  /* 文案 */
+  --text:            #FFF8E7;
+  --text-dim:        #888899;
+  --text-mute:       #555566;
+
+  /* 字体 */
+  --font-pixel:      'Press Start 2P', cursive;
+  --font-retro:      'VT323', monospace;
+  --font-body:       'Inter', -apple-system, system-ui, sans-serif;
+  --font-handwriting:'Caveat', cursive;
+
+  /* 阴影 */
+  --shadow-hard:     4px 4px 0 0 rgba(0,0,0,0.4);
+  --shadow-hard-lg:  8px 8px 0 0 rgba(0,0,0,0.5);
+  --shadow-glow-y:   0 0 24px rgba(255,185,92,0.35);
+  --shadow-glow-p:   0 0 24px rgba(255,102,204,0.35);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { background:var(--bg); color:var(--text); }
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* 背景小涂鸦纹理 */
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255,185,92,0.06), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255,102,204,0.05), transparent 50%),
+    radial-gradient(circle at 60% 30%, rgba(93,211,211,0.04), transparent 40%);
+}
+
+/* ============================================
+   通用：复古窗体（Mac OS 9 风）
+   ============================================ */
+.window {
+  background: var(--window);
+  color: var(--window-text);
+  border: 2px solid var(--window-border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-hard-lg);
+  overflow: hidden;
+}
+
+.window-bar {
+  background: var(--window-bar);
+  border-bottom: 2px solid var(--window-border);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  user-select: none;
+}
+
+.window-dots { display:flex; gap:6px; }
+.window-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,0,0,0.6);
+}
+.window-dot.red    { background: #ff5f57; }
+.window-dot.yellow { background: #febc2e; }
+.window-dot.green  { background: #28c840; }
+
+.window-title {
+  font-family: var(--font-retro);
+  font-size: 18px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #2a2418;
+  letter-spacing: 0.04em;
+}
+
+.window-close {
+  margin-left: auto;
+  font-family: var(--font-retro);
+  font-size: 20px;
+  cursor: pointer;
+  color: #4a3f28;
+  padding: 0 6px;
+  line-height: 1;
+}
+.window-close:hover { color: #000; }
+
+.window-body {
+  padding: 24px;
+  font-family: var(--font-body);
+  color: var(--window-text);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba(0,0,0,0.02) 30px 31px),
+    var(--window);
+}
+
+/* ============================================
+   顶部顶栏
+   ============================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(8px);
+  background: rgba(10,10,12,0.7);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-retro);
+  font-size: 22px;
+  color: var(--accent-cream);
+}
+
+.topbar-logo-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--accent-yellow);
+  display: grid; place-items: center;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: #1a1a1f;
+  box-shadow: var(--shadow-glow-y);
+}
+
+.topbar-actions { display:flex; gap: 14px; align-items: center; }
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--accent-mint);
+  display: grid; place-items: center;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.topbar-icon-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hard); }
+.topbar-icon-btn svg { width: 18px; height: 18px; fill: #0a0a0c; }
+
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent-cream);
+  color: #1a1a1f;
+  border-radius: 999px;
+  font-family: var(--font-retro);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  border: 2px solid #1a1a1f;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-hard);
+}
+.contact-pill:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 rgba(0,0,0,0.5); }
+.contact-pill .arrow { font-size: 14px; }
+
+/* ============================================
+   Hero
+   ============================================ */
+.hero {
+  padding: 140px 32px 60px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  align-items: center;
+  gap: 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.hero-greet {
+  font-family: var(--font-retro);
+  font-size: 28px;
+  color: var(--accent-pink);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.hero-title {
+  font-family: var(--font-retro);
+  font-size: 144px;
+  line-height: 0.9;
+  color: var(--accent-cream);
+  text-shadow: 4px 4px 0 var(--accent-pink);
+  margin-bottom: 20px;
+}
+
+.hero-title .accent { color: var(--accent-yellow); }
+.hero-title .accent-2 { color: var(--accent-cyan); }
+
+.hero-tagline {
+  font-family: var(--font-retro);
+  font-size: 26px;
+  color: var(--accent-mint);
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+}
+
+.hero-desc {
+  max-width: 520px;
+  color: #c8c8d0;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 2px solid #1a1a1f;
+  font-family: var(--font-retro);
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--accent-yellow);
+  color: #1a1a1f;
+  box-shadow: var(--shadow-hard);
+}
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 rgba(0,0,0,0.5);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--accent-cream);
+  border-color: var(--line-strong);
+}
+.btn-ghost:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+
+/* Hero 右侧人物插画位 */
+.hero-art {
+  position: relative;
+  height: 420px;
+  display: grid; place-items: center;
+}
+.hero-art .blob {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,107,53,0.18), transparent 60%);
+}
+.hero-avatar {
+  position: relative;
+  width: 360px;
+  height: 360px;
+}
+
+/* ============================================
+   主窗口
+   ============================================ */
+.section {
+  max-width: 1080px;
+  margin: 60px auto;
+  padding: 0 32px;
+}
+
+.section-label {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.2em;
+  margin-bottom: 10px;
+}
+
+.main-window {
+  background: var(--window);
+  color: var(--window-text);
+  border: 2px solid var(--window-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-hard-lg), 0 0 0 6px rgba(255,185,92,0.04);
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.main-window .window-body { padding: 32px 36px; min-height: 420px; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeUp 0.4s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tab-content h3 {
+  font-family: var(--font-retro);
+  font-size: 36px;
+  color: #1a1a1f;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+.tab-content p { color: #4a3f28; margin-bottom: 14px; font-size: 15px; }
+.tab-content .lead { font-size: 17px; line-height: 1.7; }
+
+/* HOME */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 20px;
+}
+.home-card {
+  background: #fff8e7;
+  border: 2px solid #1a1a1f;
+  border-radius: 8px;
+  padding: 18px;
+}
+.home-card .label {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: var(--accent-pink);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.home-card h4 {
+  font-family: var(--font-retro);
+  font-size: 24px;
+  color: #1a1a1f;
+  margin-bottom: 8px;
+}
+.home-card p { font-size: 14px; color: #4a3f28; margin-bottom: 0; }
+.home-card .tag {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 4px 8px;
+  background: var(--accent-yellow);
+  color: #1a1a1f;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+.home-card .tag.live { background: var(--accent-mint); }
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 32px;
+  align-items: start;
+}
+.about-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  background:
+    repeating-linear-gradient(45deg, #fff8e7 0 12px, #ece8d8 12px 24px);
+  border: 2px solid #1a1a1f;
+  border-radius: 10px;
+  display: grid; place-items: center;
+  font-family: var(--font-retro);
+  font-size: 64px;
+  color: var(--accent-pink);
+  position: relative;
+}
+.about-photo .sticker {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: var(--accent-mint);
+  padding: 4px 8px;
+  border: 2px solid #1a1a1f;
+  border-radius: 4px;
+  transform: rotate(6deg);
+  font-family: var(--font-pixel);
+  font-size: 8px;
+}
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.skill {
+  font-family: var(--font-retro);
+  font-size: 16px;
+  padding: 4px 12px;
+  border: 2px solid #1a1a1f;
+  border-radius: 999px;
+  background: #fff8e7;
+}
+.skill.c1 { background: var(--accent-yellow); color:#1a1a1f; }
+.skill.c2 { background: var(--accent-pink); color:#fff; }
+.skill.c3 { background: var(--accent-cyan); color:#1a1a1f; }
+.skill.c4 { background: var(--accent-mint); color:#1a1a1f; }
+
+/* WORK */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+.work-card {
+  border: 2px solid #1a1a1f;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff8e7;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.work-card:hover {
+  transform: translate(-3px,-3px);
+  box-shadow: var(--shadow-hard);
+}
+.work-thumb {
+  height: 130px;
+  display: grid; place-items: center;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+}
+.work-thumb.t1 { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-mint)); color:#1a1a1f; }
+.work-thumb.t2 { background: linear-gradient(135deg, var(--accent-pink), #ff99dd); }
+.work-thumb.t3 { background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow)); color:#1a1a1f; }
+.work-thumb.t4 { background: linear-gradient(135deg, #6a5acd, #ff66cc); }
+.work-info { padding: 12px 14px; }
+.work-info h4 { font-family: var(--font-retro); font-size: 22px; margin-bottom: 4px; color:#1a1a1f; }
+.work-info p { font-size: 13px; color: #4a3f28; margin-bottom: 0; }
+
+/* FAQ */
+.faq-item {
+  border-bottom: 2px dashed #b8b09a;
+  padding: 14px 0;
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  font-family: var(--font-retro);
+  font-size: 22px;
+  color: #1a1a1f;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  align-items: center;
+}
+.faq-q .sign { color: var(--accent-pink); font-size: 28px; line-height: 1; }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s;
+  font-size: 14px; color: #4a3f28;
+}
+.faq-item.open .faq-a { max-height: 240px; padding-top: 10px; }
+.faq-item.open .sign { transform: rotate(45deg); display:inline-block; }
+
+/* CONTACT */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-top: 8px;
+}
+.qr-card {
+  border: 2px solid #1a1a1f;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  background: #fff8e7;
+}
+.qr-img {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px dashed #b8b09a;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+  background:
+    repeating-conic-gradient(#1a1a1f 0% 25%, #fff 0% 50%) 50% / 12px 12px;
+  position: relative;
+}
+.qr-img::before, .qr-img::after {
+  content: ''; position: absolute;
+  border: 3px solid #1a1a1f;
+  background: #fff;
+}
+.qr-img::before {
+  top: 8px; left: 8px;
+  width: 24px; height: 24px;
+}
+.qr-img::after {
+  top: 8px; right: 8px;
+  width: 24px; height: 24px;
+}
+.qr-card h4 {
+  font-family: var(--font-retro);
+  font-size: 22px;
+  color: #1a1a1f;
+}
+.qr-card .meta {
+  font-family: var(--font-retro);
+  font-size: 16px;
+  color: #4a3f28;
+  margin-top: 4px;
+}
+
+/* 底部图标导航 */
+.bottom-nav {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 20px 16px 30px;
+  margin: 40px auto 60px;
+  max-width: 720px;
+}
+
+.nav-btn {
+  background: var(--bg-elevated);
+  border: 2px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 12px 18px 8px;
+  width: 90px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-retro);
+  font-size: 16px;
+  color: var(--accent-cream);
+}
+.nav-btn:hover {
+  border-color: var(--accent-yellow);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 0 rgba(255,185,92,0.2);
+}
+.nav-btn.active {
+  border-color: var(--accent-yellow);
+  background: linear-gradient(180deg, var(--bg-elevated), rgba(255,185,92,0.18));
+  box-shadow: 0 0 0 2px rgba(255,185,92,0.3);
+}
+.nav-btn svg {
+  width: 26px; height: 26px;
+  display: block;
+  margin: 0 auto 4px;
+}
+.nav-btn .label {
+  display: block;
+}
+
+/* ============================================
+   弹窗（参考图 3）
+   ============================================ */
+.popup-mask {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(2px);
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.popup-mask.open { display: flex; animation: fadeIn 0.25s; }
+@keyframes fadeIn { from {opacity:0} to {opacity:1} }
+
+.popup {
+  width: min(720px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  animation: pop 0.3s cubic-bezier(0.5, 1.4, 0.5, 1);
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.popup-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 12px 4px;
+}
+.popup-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.popup-tile:hover {
+  border-color: var(--accent-pink);
+  background: rgba(255,102,204,0.08);
+}
+.popup-tile .icon-circle {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  color: #fff;
+  border: 2px solid #1a1a1f;
+}
+.popup-tile.c1 .icon-circle { background: #1da1f2; }
+.popup-tile.c2 .icon-circle { background: #ff0000; }
+.popup-tile.c3 .icon-circle { background: #ff5e5b; }
+.popup-tile.c4 .icon-circle { background: #5865f2; }
+.popup-tile.c5 .icon-circle { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc236a, #bc1888); }
+.popup-tile.c6 .icon-circle { background: #1185fe; }
+.popup-tile.c7 .icon-circle { background: var(--accent-yellow); color:#1a1a1f; }
+.popup-tile.c8 .icon-circle { background: #ff66cc; }
+.popup-tile .popup-tile-name {
+  font-family: var(--font-retro);
+  font-size: 16px;
+  color: var(--window-text);
+}
+.popup-hint {
+  font-family: var(--font-retro);
+  font-size: 16px;
+  color: #6a6048;
+  text-align: center;
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+/* ============================================
+   工作详情弹窗（点 work 卡片触发）
+   ============================================ */
+.work-detail {
+  font-family: var(--font-body);
+  color: var(--window-text);
+}
+.work-detail .meta-row {
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin: 14px 0 18px;
+}
+.work-detail .chip {
+  font-family: var(--font-retro);
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #fff8e7;
+  border: 2px solid #1a1a1f;
+}
+.work-detail .preview {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: 2px solid #1a1a1f;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: grid; place-items: center;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  color: #fff;
+}
+
+/* ============================================
+   页脚
+   ============================================ */
+footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-retro);
+  font-size: 14px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+/* ============================================
+   响应式
+   ============================================ */
+@media (max-width: 860px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 120px;
+    gap: 24px;
+  }
+  .hero-title { font-size: 88px; }
+  .hero-art { height: 280px; }
+  .hero-avatar { width: 240px; height: 240px; }
+  .home-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .popup-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar { padding: 12px 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 顶部栏 -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-icon">S</div>
+    <span>stardev.studio</span>
+  </div>
+  <div class="topbar-actions">
+    <button class="topbar-icon-btn" aria-label="menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <button class="contact-pill" data-tab="contact" onclick="switchTab('contact')">
+      CONTACT <span class="arrow">↗</span>
+    </button>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div>
+    <div class="hero-greet">// hello world</div>
+    <h1 class="hero-title">
+      hi! i'm<br>
+      <span class="accent">星织</span>
+      <span class="accent-2">_dev</span>
+    </h1>
+    <div class="hero-tagline">illustrator · animator · indie dev</div>
+    <p class="hero-desc">
+      12 个月 AI 创作变现项目进行中。白天写代码、晚上画画、半夜训练 AI，
+      用 <strong style="color:var(--accent-cyan)">Godot</strong> 做小游戏、用
+      <strong style="color:var(--accent-cyan)">腾讯云 CloudBase</strong> 搭小程序、
+      用 AI 让自己变成一支队伍。
+    </p>
+    <div class="hero-cta-row">
+      <button class="btn btn-primary" onclick="switchTab('work')">看作品 ↘</button>
+      <button class="btn btn-ghost" onclick="openLinks()">+ 全部链接</button>
+    </div>
+  </div>
+
+  <!-- 人物插画（SVG 占位，可在 review 后换成你画像 / 由 AI 重画） -->
+  <div class="hero-art">
+    <div class="blob"></div>
+    <svg class="hero-avatar" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hairGrad" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#3a3a48"/>
+          <stop offset="1" stop-color="#1a1a1f"/>
+        </linearGradient>
+      </defs>
+      <!-- 椅背 -->
+      <rect x="60" y="240" width="240" height="100" rx="14" fill="#1a1a1f" opacity="0.7"/>
+      <rect x="60" y="240" width="240" height="100" rx="14" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 身体 - 毛衣 -->
+      <path d="M100 250 Q180 220 260 250 L260 320 L100 320 Z" fill="#FF6B35"/>
+      <path d="M100 250 Q180 220 260 250 L260 320 L100 320 Z" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 脖子 -->
+      <rect x="160" y="180" width="40" height="40" fill="#f5d0b0"/>
+      <rect x="160" y="180" width="40" height="40" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 头 -->
+      <ellipse cx="180" cy="150" rx="80" ry="86" fill="#f5d0b0"/>
+      <ellipse cx="180" cy="150" rx="80" ry="86" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 头发 - 长发挡眼 -->
+      <path d="M100 130 Q105 70 180 60 Q260 65 262 135 Q260 110 220 105 L215 145 L200 130 Q190 95 180 90 Q170 100 165 130 L150 145 L140 110 Q120 110 100 130 Z" fill="url(#hairGrad)"/>
+      <path d="M100 130 Q105 70 180 60 Q260 65 262 135" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 刘海中分两绺 -->
+      <path d="M170 95 Q175 130 165 155" fill="none" stroke="#1a1a1f" stroke-width="2" opacity="0.6"/>
+      <path d="M195 95 Q195 130 200 155" fill="none" stroke="#1a1a1f" stroke-width="2" opacity="0.6"/>
+      <!-- 闭眼（极简线） -->
+      <path d="M148 158 Q156 162 164 158" stroke="#1a1a1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M196 158 Q204 162 212 158" stroke="#1a1a1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- 鼻子 -->
+      <path d="M178 165 L176 178 L182 178 Z" fill="#e8b89a" opacity="0.7"/>
+      <!-- 嘴 -->
+      <path d="M170 190 Q180 196 190 190" stroke="#1a1a1f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- 圆眼镜 -->
+      <circle cx="156" cy="158" r="22" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <circle cx="204" cy="158" r="22" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <line x1="178" y1="158" x2="182" y2="158" stroke="#1a1a1f" stroke-width="3"/>
+      <!-- 笔记本 -->
+      <rect x="220" y="270" width="120" height="80" rx="4" fill="#1a1a1f"/>
+      <rect x="220" y="270" width="120" height="80" rx="4" fill="none" stroke="#1a1a1f" stroke-width="3"/>
+      <rect x="232" y="282" width="60" height="6" rx="2" fill="#5DD3D3" opacity="0.7"/>
+      <rect x="232" y="294" width="80" height="4" rx="2" fill="#666"/>
+      <rect x="232" y="304" width="50" height="4" rx="2" fill="#666"/>
+      <!-- 咖啡杯 -->
+      <rect x="60" y="290" width="30" height="38" rx="3" fill="#fff8e7" stroke="#1a1a1f" stroke-width="2"/>
+      <path d="M90 295 Q102 300 90 310" fill="none" stroke="#1a1a1f" stroke-width="2"/>
+      <path d="M70 286 Q73 282 70 278" stroke="#1a1a1f" stroke-width="1.5" fill="none"/>
+      <path d="M78 286 Q81 282 78 278" stroke="#1a1a1f" stroke-width="1.5" fill="none"/>
+      <!-- 头部光环/星星点缀 -->
+      <text x="50" y="100" font-family="Press Start 2P" font-size="20" fill="#FF66CC">✦</text>
+      <text x="290" y="200" font-family="Press Start 2P" font-size="14" fill="#FFB95C">✦</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 主窗体 -->
+<section class="section">
+  <div class="section-label">[ main-window.exe ]</div>
+  <div class="main-window" id="mainWindow">
+    <div class="window-bar">
+      <div class="window-dots">
+        <span class="window-dot red"></span>
+        <span class="window-dot yellow"></span>
+        <span class="window-dot green"></span>
+      </div>
+      <div class="window-title" id="windowTitle">home</div>
+      <div class="window-close" onclick="switchTab('home')">×</div>
+    </div>
+    <div class="window-body">
+
+      <!-- ===== HOME ===== -->
+      <div class="tab-content active" data-tab="home">
+        <h3>👋 最近在做什么</h3>
+        <p class="lead">
+          个人站样板 v0.1 — 我用了 Mac OS 9 风的窗体，假装自己是个 1998 年穿越来的独立开发者。
+          下面是当前在跑的几件事：
+        </p>
+        <div class="home-grid">
+          <div class="home-card">
+            <div class="label">// project.001</div>
+            <h4>天气推荐旅游小应用</h4>
+            <p>全栈 Web 小应用，腾讯云 CloudBase + 前端。
+               根据天气推荐 3 个附近景点。已经过内部 demo。</p>
+            <span class="tag live">● live</span>
+          </div>
+          <div class="home-card">
+            <div class="label">// project.002</div>
+            <h4>Godot 小游戏</h4>
+            <p>第一个完整的小游戏原型，思路是做「解压+经营」类。
+               引擎版本: Godot 4.3。AI 辅助美术与剧本。</p>
+            <span class="tag">● in dev</span>
+          </div>
+          <div class="home-card">
+            <div class="label">// project.003</div>
+            <h4>AI 工作流笔记</h4>
+            <p>把 DeepSeek Harness + SiliconFlow 接到日常工作流，
+               沉淀可复用的 prompt 模板。每天一篇博客。</p>
+            <span class="tag live">● live</span>
+          </div>
+          <div class="home-card">
+            <div class="label">// project.004</div>
+            <h4>一个月粉丝破 0</h4>
+            <p>把创作过程拍成短视频，做个人 IP 的起点。
+               目标：1 个月内视频号过 100 关注。</p>
+            <span class="tag">○ planned</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ABOUT ===== -->
+      <div class="tab-content" data-tab="about">
+        <div class="about-grid">
+          <div class="about-photo">
+            🐰
+            <div class="sticker">v0.1 BUILD</div>
+          </div>
+          <div>
+            <h3>about me</h3>
+            <p>
+              一个想用 <strong>12 个月</strong>时间，做到 <strong>月入 ≥ ¥3,000</strong> 的独立创作者。
+              长期目标是数字游民、远程在家工作、不打工。
+            </p>
+            <p>
+              技术栈有限，没正经发过作品，所以选了一条「AI 辅助补短板」的路 —
+              AI 写代码、我挑毛病；AI 画草图、我填细节；AI 写脚本、我剪片子。
+            </p>
+            <div class="skills-list">
+              <span class="skill c1">Godot 4</span>
+              <span class="skill c2">AI prompting</span>
+              <span class="skill c3">CloudBase</span>
+              <span class="skill c4">像素美术</span>
+              <span class="skill c1">短视频脚本</span>
+              <span class="skill c2">小程序开发</span>
+              <span class="skill c3">DeepSeek Harness</span>
+              <span class="skill c4">二次元</span>
+            </div>
+            <p style="color:#6a6048; font-size:13px;">
+              // 把上面的 skills 改成你真的会/想会的就行
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== WORK ===== -->
+      <div class="tab-content" data-tab="work">
+        <h3>works</h3>
+        <p class="lead">点开任意一张卡片可以查看更多细节 — 模拟图 3 的弹窗体验。</p>
+        <div class="work-grid" id="workGrid">
+          <div class="work-card" data-work="weather">
+            <div class="work-thumb t1">weatherTrip<br>recommender</div>
+            <div class="work-info"><h4>天气推荐旅游</h4><p>Web · 2026-08</p></div>
+          </div>
+          <div class="work-card" data-work="godot">
+            <div class="work-thumb t2">indie<br>game</div>
+            <div class="work-info"><h4>解压小游戏</h4><p>Godot · 进行中</p></div>
+          </div>
+          <div class="work-card" data-work="blog">
+            <div class="work-thumb t3">devlog<br>site</div>
+            <div class="work-info"><h4>个人博客系统</h4><p>Web · 2026</p></div>
+          </div>
+          <div class="work-card" data-work="moments">
+            <div class="work-thumb t4">1 month<br>vlog</div>
+            <div class="work-info"><h4>第一个月 Vlog</h4><p>Video · 计划中</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FAQ ===== -->
+      <div class="tab-content" data-tab="faq">
+        <h3>faq — 常见问题</h3>
+        <p class="lead">点这里展开/收起 — 跟图 1 里"鼠标移到 ? 上"的体验差不多。</p>
+        <div class="faq-item">
+          <div class="faq-q">1. 这个站是干嘛用的？<span class="sign">+</span></div>
+          <div class="faq-a">主要是我创作的"门面"——放作品、放过程、放联系方式。
+            偶尔也写点技术笔记。不会发长篇深度文，长文去我的公众号。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">2. 你用什么技术栈？<span class="sign">+</span></div>
+          <div class="faq-a">静态站点优先用 CloudBase/EdgeOne Pages，
+            小程序用微信云开发，游戏用 Godot 4。AI 工具链主要用 DeepSeek Harness + SiliconFlow。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">3. 你的视频号主要讲什么？<span class="sign">+</span></div>
+          <div class="faq-a">AI 编程实战 + 独立游戏开发日志 + 小程序冷启动经验。
+            节奏：每周 1 条，不内卷。</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">4. 我能 / 可以接外包吗？<span class="sign">+</span></div>
+          <div class="faq-a">目前不接。等 12 个月计划跑通、月收入稳定超过 ¥3,000 后，
+            会考虑接小活儿。着急的话邮件留言，我看见会回。</div>
+        </div>
+      </div>
+
+      <!-- ===== CONTACT ===== -->
+      <div class="tab-content" data-tab="contact">
+        <h3>contact me ✉️</h3>
+        <p class="lead">三种最快的联系方式 — 都点开后扫二维码即可。</p>
+        <div class="contact-grid">
+          <div class="qr-card">
+            <div class="qr-img"></div>
+            <h4>Email</h4>
+            <div class="meta">your_name@qq.com</div>
+          </div>
+          <div class="qr-card">
+            <div class="qr-img"></div>
+            <h4>微信</h4>
+            <div class="meta">your_wechat_id</div>
+          </div>
+          <div class="qr-card">
+            <div class="qr-img"></div>
+            <h4>QQ</h4>
+            <div class="meta">000 0000 000</div>
+          </div>
+        </div>
+        <p style="font-size:13px; color:#6a6048; margin-top: 18px;">
+          // .qr-img 里的对角图案是占位 — 你把真实二维码图片（PNG/JPG）
+          // 命名成 qr_email.png / qr_wechat.png / qr_qq.png 放项目目录下，
+          // 然后把 CSS 里的 .qr-img 改成 background-image:url(...) 就行。
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 底部图标导航 -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" data-tab="about" onclick="switchTab('about')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="9" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
+      </svg>
+      <span class="label">about</span>
+    </button>
+    <button class="nav-btn" onclick="openLinks()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 14a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/>
+        <path d="M14 10a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/>
+      </svg>
+      <span class="label">links</span>
+    </button>
+    <button class="nav-btn" data-tab="work" onclick="switchTab('work')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>
+      </svg>
+      <span class="label">work</span>
+    </button>
+    <button class="nav-btn" data-tab="faq" onclick="switchTab('faq')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/>
+        <circle cx="12" cy="17" r="0.5" fill="currentColor"/>
+      </svg>
+      <span class="label">faq</span>
+    </button>
+    <button class="nav-btn" data-tab="contact" onclick="switchTab('contact')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 8l9 6 9-6"/>
+      </svg>
+      <span class="label">contact</span>
+    </button>
+  </nav>
+</section>
+
+<footer>
+  © 2026 stardev.studio · Build v0.1 · 用 ☕ + VS Code 拼出来的
+</footer>
+
+<!-- ============================================
+     弹窗 1：links（参考图 3 的核心交互）
+     ============================================ -->
+<div class="popup-mask" id="linksPopup">
+  <div class="window popup">
+    <div class="window-bar">
+      <div class="window-dots">
+        <span class="window-dot red" onclick="closeAllPopups()"></span>
+        <span class="window-dot yellow"></span>
+        <span class="window-dot green"></span>
+      </div>
+      <div class="window-title">links</div>
+      <div class="window-close" onclick="closeAllPopups()">×</div>
+    </div>
+    <div class="window-body">
+      <div class="popup-grid">
+        <a class="popup-tile c1" href="#" onclick="return false"><div class="icon-circle">X</div><span class="popup-tile-name">twitter</span></a>
+        <a class="popup-tile c2" href="#" onclick="return false"><div class="icon-circle">▶</div><span class="popup-tile-name">youtube</span></a>
+        <a class="popup-tile c3" href="#" onclick="return false"><div class="icon-circle">♥</div><span class="popup-tile-name">ko-fi</span></a>
+        <a class="popup-tile c4" href="#" onclick="return false"><div class="icon-circle">D</div><span class="popup-tile-name">discord</span></a>
+        <a class="popup-tile c5" href="#" onclick="return false"><div class="icon-circle">◎</div><span class="popup-tile-name">instagram</span></a>
+        <a class="popup-tile c6" href="#" onclick="return false"><div class="icon-circle">B</div><span class="popup-tile-name">bluesky</span></a>
+        <a class="popup-tile c7" href="#" onclick="return false"><div class="icon-circle">A</div><span class="popup-tile-name">art prints</span></a>
+        <a class="popup-tile c8" href="#" onclick="return false"><div class="icon-circle">$</div><span class="popup-tile-name">merch</span></a>
+      </div>
+      <div class="popup-hint">点击任一图标在新标签页打开</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     弹窗 2：work 详情（点 work 卡片触发）
+     ============================================ -->
+<div class="popup-mask" id="workPopup">
+  <div class="window popup">
+    <div class="window-bar">
+      <div class="window-dots">
+        <span class="window-dot red" onclick="closeAllPopups()"></span>
+        <span class="window-dot yellow"></span>
+        <span class="window-dot green"></span>
+      </div>
+      <div class="window-title" id="workPopupTitle">project</div>
+      <div class="window-close" onclick="closeAllPopups()">×</div>
+    </div>
+    <div class="window-body">
+      <div class="work-detail" id="workPopupBody"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   数据：5 个 tab 内容（已写在上方 HTML）
+   工作详情数据
+   ============================================ */
+const WORK_DETAILS = {
+  weather: {
+    title: 'weatherTrip — 天气推荐旅游',
+    chips: ['Web', 'CloudBase', 'AI prompt', '2026-08'],
+    previewClass: 't1',
+    previewText: '截图占位 — 部署后接入真实截图',
+    desc: '全栈 Web 小应用：登录 + 用户数据库（PostgreSQL）+ 推荐算法。\n核心体验：用户登录 → 输入当前城市 → 根据当天天气推荐 3 个 50km 内的合适景点。\n技术亮点：腾讯云 CloudBase 体验版 + Serverless 云函数 + 自建的 prompt 模板让大模型做景点匹配。',
+    status: '已过内部 demo，目标 9 月上 v0.1'
+  },
+  godot: {
+    title: '解压小游戏（暂命名）',
+    chips: ['Godot 4.3', 'GDShader', 'Game', '进行中'],
+    previewClass: 't2',
+    previewText: 'Godot 截图占位',
+    desc: '一个 1-3 分钟一局的轻量小游戏。核心循环：放置 → 升级 → 解锁新机制。\n美术用 AI 草图 + 像素化处理，剧本用 DeepSeek Harness 生成多分支。\n首发平台：itch.io（海外）+ 微信小程序（国内）。',
+    status: '原型阶段，预计 10 月发布 demo'
+  },
+  blog: {
+    title: '个人博客 / devlog',
+    chips: ['静态站', 'CloudBase', 'Devlog', '2026'],
+    previewClass: 't3',
+    previewText: 'devlog 截图占位',
+    desc: '把创作过程当连载写。每周 1-2 篇，主线：AI 工具上手、独立游戏开发心得、12 个月成长复盘。\n后期接入评论系统和 RSS。',
+    status: 'v0.1 搭建中'
+  },
+  moments: {
+    title: '第一个月 Vlog',
+    chips: ['视频号', '剪映', 'Vlog', '计划中'],
+    previewClass: 't4',
+    previewText: '视频封面占位',
+    desc: '把"从零到 100 粉"的整段过程拍成 Vlog。\n形式：每天 60 秒短视频 + 每周一条 3-5 分钟总结。\n目标：把创作过程变成作品本身。',
+    status: '9 月开工'
+  }
+};
+
+/* ============================================
+   切换主窗体的 tab
+   ============================================ */
+function switchTab(name) {
+  // 隐藏所有 tab 内容
+  document.querySelectorAll('.tab-content').forEach(el => {
+    el.classList.toggle('active', el.dataset.tab === name);
+  });
+  // 更新窗口标题
+  document.getElementById('windowTitle').textContent = name;
+  // 更新底部按钮的 active 状态
+  document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === name);
+  });
+  // 滚动到主窗体
+  document.getElementById('mainWindow').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ============================================
+   弹窗控制
+   ============================================ */
+function openLinks() {
+  closeAllPopups();
+  document.getElementById('linksPopup').classList.add('open');
+}
+function openWork(key) {
+  const detail = WORK_DETAILS[key];
+  if (!detail) return;
+  closeAllPopups();
+  document.getElementById('workPopupTitle').textContent = detail.title;
+  document.getElementById('workPopupBody').innerHTML = `
+    <div class="preview ${detail.previewClass}">${detail.previewText}</div>
+    <div class="meta-row">
+      ${detail.chips.map(c => `<span class="chip">${c}</span>`).join('')}
+    </div>
+    <p style="white-space:pre-line; font-family: var(--font-body); font-size:15px; line-height:1.7;">
+      ${detail.desc}
+    </p>
+    <p style="margin-top:14px; font-family: var(--font-retro); font-size:18px; color: #6a6048;">
+      status: ${detail.status}
+    </p>
+  `;
+  document.getElementById('workPopup').classList.add('open');
+}
+function closeAllPopups() {
+  document.querySelectorAll('.popup-mask').forEach(m => m.classList.remove('open'));
+}
+
+/* ============================================
+   事件绑定
+   ============================================ */
+// work 卡片点击
+document.getElementById('workGrid').addEventListener('click', e => {
+  const card = e.target.closest('.work-card');
+  if (card) openWork(card.dataset.work);
+});
+
+// FAQ 折叠
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+});
+
+// 弹窗遮罩点击关闭（点击非弹窗区域时）
+document.querySelectorAll('.popup-mask').forEach(mask => {
+  mask.addEventListener('click', e => {
+    if (e.target === mask) closeAllPopups();
+  });
+});
+
+// Esc 关弹窗
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAllPopups();
+});
+
+// 初始化：让 contact 按钮高亮 contact tab
+document.querySelectorAll('.contact-pill').forEach(p => {
+  p.addEventListener('click', () => switchTab(p.dataset.tab));
+});
+
+// 默认高亮 about 按钮（视觉引导）
+switchTab('home');
+</script>
+</body>
+</html>
